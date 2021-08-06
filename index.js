@@ -3,6 +3,7 @@
 const AdmZip = require('adm-zip')
 const marked = require('marked')
 const Papa = require('papaparse')
+const fs = require('fs')
 
 function isRootMdFile (entry) {
   return !entry.entryName.includes('/') &&
@@ -96,6 +97,11 @@ function processRootMarkdown ({ rootMarkdown, zip }) {
   const lexedMd = marked.lexer(mdContent)
 
   return lexedMd.map(processMarkdownNode.bind(null, zip))
+}
+
+if (!process.argv[2] || !fs.existsSync(process.argv[2])) {
+  console.error('Fatal: must provide a file as argument')
+  process.exit(1)
 }
 
 console.log(serializeLexedMarkdown(processRootMarkdown(loadZip(process.argv[2]))))
