@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const AdmZip = require('adm-zip')
 const marked = require('marked')
 const Papa = require('papaparse')
@@ -44,7 +46,7 @@ function processMarkdownLink (zip, node) {
   // matching the exact format isn't super important because we're converting back ourselves
   return {
     type: "table",
-    raw: parsed.data.map(row => {
+    raw: `#### ${node.text}\n\n` + parsed.data.map(row => {
       return `|${row.join('|')}|`
     }).join('\n')
   }
